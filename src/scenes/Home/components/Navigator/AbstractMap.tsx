@@ -42,7 +42,10 @@ const AbstractMap: FC<AbstractMapProps> = ({
   );
 
   // console.log(cityProjectionPoints);
-  const supplyCanvasRef = useRef<AbstractMapCanvas | null>(null);
+
+  const [supplyCanvas, setSupplyCanvas] = useState<AbstractMapCanvas | null>(
+    null
+  );
 
   const gotSupplyContainer = useCallback((element: HTMLDivElement) => {
     if (!element) {
@@ -55,7 +58,7 @@ const AbstractMap: FC<AbstractMapProps> = ({
     if (!allData) {
       return;
     }
-    if (!supplyCanvasRef.current) {
+    if (!supplyCanvas) {
       return;
     }
     const supplyData = new Map<KR_CITIES, number>();
@@ -107,14 +110,14 @@ const AbstractMap: FC<AbstractMapProps> = ({
 
     const maxVal = Math.max(maxSupply, maxDemand);
     const minVal = Math.min(minSupply, minDemand);
-    supplyCanvasRef.current.intialize(supplyData, minVal, maxVal);
-  }, [allData, supplyContainer]);
+    supplyCanvas.intialize(supplyData, minVal, maxVal);
+  }, [allData, supplyContainer, supplyCanvas]);
 
   useEffect(() => {
     if (!supplyContainer) {
       return;
     }
-    const canvas = new P5((p5: P5) => {
+    const canvas = new P5(async (p5: P5) => {
       const width = supplyContainer.clientWidth;
       const abstractMapCanvas = new AbstractMapCanvas(
         p5,
@@ -124,7 +127,7 @@ const AbstractMap: FC<AbstractMapProps> = ({
         setFilter,
         filter
       );
-      supplyCanvasRef.current = abstractMapCanvas;
+      setSupplyCanvas(abstractMapCanvas);
       const setup = () => {
         p5.createCanvas(width, height);
       };
@@ -148,34 +151,36 @@ const AbstractMap: FC<AbstractMapProps> = ({
         abstractMapCanvas.setSelectedCity(filter.city as KR_CITIES);
       }
     }, supplyContainer);
+    console.log("make canvas");
     return () => {
+      console.log("remove canvas");
       canvas.remove();
     };
   }, [supplyContainer, height]);
 
   useEffect(() => {
-    if (!supplyCanvasRef.current) {
+    if (!supplyCanvas) {
       return;
     }
     if (!filter.city) {
-      supplyCanvasRef.current.setSelectedCity(null);
+      supplyCanvas.setSelectedCity(null);
     } else {
-      supplyCanvasRef.current.setSelectedCity(filter.city as KR_CITIES);
+      supplyCanvas.setSelectedCity(filter.city as KR_CITIES);
     }
-  }, [filter.city, filter]);
+  }, [filter.city, filter, supplyCanvas]);
 
   useEffect(() => {
-    if (!supplyCanvasRef.current) {
+    if (!supplyCanvas) {
       return;
     }
-    supplyCanvasRef.current.updateFilter(filter);
+    supplyCanvas.updateFilter(filter);
   }, [filter]);
 
   useEffect(() => {
-    if (!supplyCanvasRef.current) {
+    if (!supplyCanvas) {
       return;
     }
-    supplyCanvasRef.current.updateSetFilter(setFilter);
+    supplyCanvas.updateSetFilter(setFilter);
   }, [setFilter]);
 
   return (
