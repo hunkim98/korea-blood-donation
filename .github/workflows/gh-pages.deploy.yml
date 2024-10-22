@@ -8,10 +8,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      NEXT_PUBLIC_RUNTIME_ENV: prod
-      NEXT_PUBLIC_GOOGLE_ANALYTICS: G-N4047GMEZT
-
     strategy:
       matrix:
         node-version: [18.x]
@@ -27,10 +23,10 @@ jobs:
         run: npm install
       - name: Build project
         run: npm run build
-      - name: Deploy to GitHub Pages
-        run: npm run deploy
-    #   - name: Deploy
-    #     uses: JamesIves/github-pages-deploy-action@4.1.1
-    #     with:
-    #       branch: gh-pages
-    #       folder: out
+    #   - name: Deploy to GitHub Pages
+    #     run: npm run deploy
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          branch: gh-pages
+          folder: dist
