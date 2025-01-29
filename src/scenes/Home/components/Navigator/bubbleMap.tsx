@@ -7,15 +7,16 @@ import React, {
   useState,
 } from "react";
 import * as d3 from "d3";
-import { SupplyBubbleMapCanvas } from "./canvas";
+import { AbstractMapCanvas } from "./canvas";
 import KR_CITIES from "@utils/cities";
 import { Filter } from "@data/useData";
 import { Supply } from "@data/supply/Supply";
 import { Demand } from "@data/demand/Demand";
 import { Event } from "@data/events/Event";
+import * as topojson from "topojson-client";
 import P5 from "p5";
 
-export interface SupplyBubbleMapProps {
+interface BubbleMapProps {
   width: number;
   height: number;
   filter: Filter;
@@ -27,7 +28,7 @@ export interface SupplyBubbleMapProps {
   };
 }
 
-const SupplyBubbleMap: FC<SupplyBubbleMapProps> = ({
+const BubbleMap: FC<BubbleMapProps> = ({
   filter,
   width,
   height,
@@ -40,8 +41,9 @@ const SupplyBubbleMap: FC<SupplyBubbleMapProps> = ({
 
   // console.log(cityProjectionPoints);
 
-  const [supplyCanvas, setSupplyCanvas] =
-    useState<SupplyBubbleMapCanvas | null>(null);
+  const [supplyCanvas, setSupplyCanvas] = useState<AbstractMapCanvas | null>(
+    null
+  );
 
   const gotSupplyContainer = useCallback((element: HTMLDivElement) => {
     if (!element) {
@@ -115,8 +117,7 @@ const SupplyBubbleMap: FC<SupplyBubbleMapProps> = ({
     }
     const canvas = new P5(async (p5: P5) => {
       const width = supplyContainer.clientWidth;
-      const height = width * 1.8;
-      const abstractMapCanvas = new SupplyBubbleMapCanvas(
+      const abstractMapCanvas = new AbstractMapCanvas(
         p5,
         new Map(),
         width,
@@ -126,8 +127,9 @@ const SupplyBubbleMap: FC<SupplyBubbleMapProps> = ({
       );
       setSupplyCanvas(abstractMapCanvas);
       const setup = () => {
-        p5.createCanvas(width, height);
-        // remove border
+        const canvas = p5.createCanvas(width, height);
+        canvas.style("border", "1px solid rgba(0,0,0,0.1)");
+        p5.noStroke();
       };
       p5.setup = () => {
         setup();
@@ -135,6 +137,7 @@ const SupplyBubbleMap: FC<SupplyBubbleMapProps> = ({
       p5.draw = () => {
         p5.clear();
         p5.rect(0, 0, width, height);
+        p5.noStroke();
         abstractMapCanvas.render();
       };
       p5.mouseClicked = () => {
@@ -149,7 +152,9 @@ const SupplyBubbleMap: FC<SupplyBubbleMapProps> = ({
         abstractMapCanvas.setSelectedCity(filter.city as KR_CITIES);
       }
     }, supplyContainer);
+    console.log("make canvas");
     return () => {
+      console.log("remove canvas");
       canvas.remove();
     };
   }, [supplyContainer, height]);
@@ -180,12 +185,18 @@ const SupplyBubbleMap: FC<SupplyBubbleMapProps> = ({
   }, [setFilter]);
 
   return (
-    <div className="relative" ref={gotSupplyContainer}>
-      <div className="absolute text-body-small mt-8 opacity-50 text-center w-full px-10 border-none">
-        Which city had the most blood donation?
+    <div
+      className="relative"
+      ref={gotSupplyContainer}
+      style={{
+        height: height,
+      }}
+    >
+      <div className="absolute text-body-small mt-8 opacity-50 text-center w-full">
+        Blood Donation Map by Volume
       </div>
     </div>
   );
 };
 
-export default SupplyBubbleMap;
+export default BubbleMap;

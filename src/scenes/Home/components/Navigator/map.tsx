@@ -116,7 +116,7 @@ const KoreaMap: FC<KoreaMapProps> = ({
       .scaleLinear<string>()
       .range(["rgba(255,0,0,0.1)", "rgba(255,0,0,0.8)"])
       .domain([minDonation, maxDonation] as [number, number]);
-    const height = width * 1.8;
+    // const height = width * 1.8;
     const svg = d3
       .select(svgRef.current)
       .attr("width", width)

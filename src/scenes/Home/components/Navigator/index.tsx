@@ -7,6 +7,7 @@ import KoreaMap from "./map";
 
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import Resizer from "@utils/mapResizer";
+import BubbleMap from "./bubbleMap";
 
 export interface NavigatorProps {
   filter: Filter;
@@ -77,7 +78,7 @@ const Navigator: FC<NavigatorProps> = ({ filter, setFilter }) => {
           </span>
           {!filter.city && (
             <div className="text-body-small text-center bg-gray-100 rounded-sm p-2 mt-2 -mb-8">
-              Select a city to view the supply demand ratio of a specific region
+              Select a city to view the data of a specific region
             </div>
           )}
         </div>
@@ -93,15 +94,15 @@ const Navigator: FC<NavigatorProps> = ({ filter, setFilter }) => {
             minDonation={minDonation}
           />
         </Resizer>
-        {/* <Resizer>
-          <AbstractMap
+        <Resizer>
+          <BubbleMap
             filter={filter}
             setFilter={setFilter}
             filteredData={allData}
             width={50}
             height={50}
           />
-        </Resizer> */}
+        </Resizer>
       </div>
     </div>
   );

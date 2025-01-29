@@ -1,7 +1,7 @@
 import KR_CITIES from "@utils/cities";
 import p5 from "p5";
-import topoData from "./provinces-topo-simple.json";
-import cityData from "./cities.json";
+import topoData from "@data/korea/provinces-topo-simple.json";
+import cityData from "@data/korea/cities.json";
 import * as d3 from "d3";
 import * as topojson from "topojson-client";
 import nerdamer from "nerdamer";
@@ -248,17 +248,21 @@ export class AbstractMapCanvas {
     }
     const { x, y, size } = this.cityRenderData.get(city)!;
     // this.p5.fill(255, 0, 0);
-    this.p5.circle(x, y, size);
     // add text
     const textSize = this.p5.map(size, MIN_SIZE, MAX_SIZE, 8, 20);
     this.p5.textSize(textSize);
     // this.p5.fill(0);
     // center the text
+    this.p5.stroke(0, 0, 0, 50);
+    this.p5.strokeWeight(1);
+    this.p5.circle(x, y, size);
+    this.p5.noStroke();
     this.p5.textAlign(this.p5.CENTER, this.p5.CENTER);
+    this.p5.fill(0);
     const textWithoutSlash = city.split("/")[0];
-    this.p5.fill("black");
     this.p5.text(textWithoutSlash, x, y);
     this.renderedFlag.set(city, true);
+
     this.p5.pop();
   }
 
@@ -402,6 +406,8 @@ export class AbstractMapCanvas {
       this.calculateRenderInfo();
     const mapWidth = rightMostX - leftMostX;
     const mapHeight = bottomMostY - topMostY;
+    this.p5.noStroke();
+    // this.p5.stroke(0, 0, 0, 30);
     this.p5.translate(
       this.p5.width / 2 - mapWidth / 2 - leftMostX,
       this.p5.height / 2 - mapHeight / 2 - topMostY
@@ -452,6 +458,7 @@ export class AbstractMapCanvas {
       const cityData = this.cityRenderData.get(this.hoveredCity)!;
       this.p5.push();
       this.p5.noFill();
+      this.p5.stroke(0, 0, 0, 100);
       this.p5.strokeWeight(2);
       this.p5.circle(cityData.x, cityData.y, cityData.size);
       this.p5.pop();
@@ -463,7 +470,6 @@ export class AbstractMapCanvas {
     const y = this.p5.mouseY - this.offset.y;
     const city = this.getCityByXY(x, y);
     if (city) {
-      console.log("jijiji");
       this.setFilter({
         ...this.filter,
         city: city,
