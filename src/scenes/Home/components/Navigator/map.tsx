@@ -2,10 +2,10 @@ import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 
 import * as d3 from "d3";
 import * as topojson from "topojson-client";
-import topoData from "./provinces-topo-simple.json";
+import topoData from "@data/korea/provinces-topo-simple.json";
 import { Filter } from "@data/useData";
 import "./map.css";
-import cityData from "./cities.json";
+import cityData from "@data/korea/cities.json";
 import { Supply } from "@data/supply/Supply";
 import { Demand } from "@data/demand/Demand";
 import { Event } from "@data/events/Event";
@@ -116,7 +116,7 @@ const KoreaMap: FC<KoreaMapProps> = ({
       .scaleLinear<string>()
       .range(["rgba(255,0,0,0.1)", "rgba(255,0,0,0.8)"])
       .domain([minDonation, maxDonation] as [number, number]);
-
+    const height = width * 1.8;
     const svg = d3
       .select(svgRef.current)
       .attr("width", width)

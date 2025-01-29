@@ -4,9 +4,9 @@ import { AbstractMapCanvas } from "./canvas";
 import P5 from "p5";
 import KR_CITIES from "@utils/cities";
 import KoreaMap from "./map";
-import Resizer from "./mapResizer";
-import AbstractMap from "./AbstractMap";
+
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
+import Resizer from "@utils/mapResizer";
 
 export interface NavigatorProps {
   filter: Filter;
@@ -93,8 +93,7 @@ const Navigator: FC<NavigatorProps> = ({ filter, setFilter }) => {
             minDonation={minDonation}
           />
         </Resizer>
-        <Resizer>
-          {/* <div ref={gotSupplyContainer}></div> */}
+        {/* <Resizer>
           <AbstractMap
             filter={filter}
             setFilter={setFilter}
@@ -102,11 +101,7 @@ const Navigator: FC<NavigatorProps> = ({ filter, setFilter }) => {
             width={50}
             height={50}
           />
-        </Resizer>
-        {/* <div>
-          <h2>Demand Map</h2>
-          <div ref={gotDemandContainer}></div>
-        </div> */}
+        </Resizer> */}
       </div>
     </div>
   );

@@ -14,12 +14,14 @@ export interface BalancerDetailProps {
     demand: number;
     events: number;
     ratio: number;
+    offset: number;
   };
   max: {
     supply: number;
     demand: number;
     events: number;
     ratio: number;
+    offset: number;
   };
 }
 

@@ -7,18 +7,15 @@ import React, {
   useState,
 } from "react";
 import * as d3 from "d3";
-import { AbstractMapCanvas } from "./canvas";
+import { SupplyBubbleMapCanvas } from "./canvas";
 import KR_CITIES from "@utils/cities";
 import { Filter } from "@data/useData";
 import { Supply } from "@data/supply/Supply";
 import { Demand } from "@data/demand/Demand";
 import { Event } from "@data/events/Event";
-import topoData from "./provinces-topo-simple.json";
-import cityData from "./cities.json";
-import * as topojson from "topojson-client";
 import P5 from "p5";
 
-interface AbstractMapProps {
+interface SupplyCityMapProps {
   width: number;
   height: number;
   filter: Filter;
@@ -30,7 +27,7 @@ interface AbstractMapProps {
   };
 }
 
-const AbstractMap: FC<AbstractMapProps> = ({
+const SupplyCityMap: FC<SupplyCityMapProps> = ({
   filter,
   width,
   height,
@@ -43,9 +40,8 @@ const AbstractMap: FC<AbstractMapProps> = ({
 
   // console.log(cityProjectionPoints);
 
-  const [supplyCanvas, setSupplyCanvas] = useState<AbstractMapCanvas | null>(
-    null
-  );
+  const [supplyCanvas, setSupplyCanvas] =
+    useState<SupplyBubbleMapCanvas | null>(null);
 
   const gotSupplyContainer = useCallback((element: HTMLDivElement) => {
     if (!element) {
@@ -119,7 +115,7 @@ const AbstractMap: FC<AbstractMapProps> = ({
     }
     const canvas = new P5(async (p5: P5) => {
       const width = supplyContainer.clientWidth;
-      const abstractMapCanvas = new AbstractMapCanvas(
+      const abstractMapCanvas = new SupplyBubbleMapCanvas(
         p5,
         new Map(),
         width,
@@ -151,9 +147,7 @@ const AbstractMap: FC<AbstractMapProps> = ({
         abstractMapCanvas.setSelectedCity(filter.city as KR_CITIES);
       }
     }, supplyContainer);
-    console.log("make canvas");
     return () => {
-      console.log("remove canvas");
       canvas.remove();
     };
   }, [supplyContainer, height]);
@@ -192,4 +186,4 @@ const AbstractMap: FC<AbstractMapProps> = ({
   );
 };
 
-export default AbstractMap;
+export default SupplyCityMap;
