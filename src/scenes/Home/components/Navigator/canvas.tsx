@@ -478,6 +478,9 @@ export class AbstractMapCanvas {
   }
 
   mouseMoved() {
+    if (!this.p5 || !this.p5.mouseX || !this.p5.mouseY) {
+      return;
+    }
     const x = this.p5.mouseX - this.offset.x;
     const y = this.p5.mouseY - this.offset.y;
     const city = this.getCityByXY(x, y);

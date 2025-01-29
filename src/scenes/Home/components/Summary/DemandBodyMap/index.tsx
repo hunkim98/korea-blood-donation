@@ -16,6 +16,7 @@ export interface DemandBodyMapProps {
 const DemandBodyMap: React.FC<DemandBodyMapProps> = ({ width, height }) => {
   return (
     <div>
+      <div className="text-center">Where were the donated blood used for?</div>
       <ExampleBodySvg />
     </div>
   );

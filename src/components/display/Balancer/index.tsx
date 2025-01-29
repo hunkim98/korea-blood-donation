@@ -137,7 +137,7 @@ const Balancer: FC<BalancerProps> = ({
             background: color,
             width:
               ((Math.abs(offsetAmount) / Math.abs(min.offset)) * width) / 2,
-            height: thk,
+            height: width / 4,
             position: "absolute",
             top: "50%",
             left: "50%",
@@ -155,7 +155,7 @@ const Balancer: FC<BalancerProps> = ({
         className="absolute bg-[#e5e7eb]"
         style={{
           width: thk / 6,
-          height: tabLength,
+          height: tabLength * 2,
           top: "50%",
           right: "50%",
           transform: "translate(50%, -50%)",
@@ -169,7 +169,7 @@ const Balancer: FC<BalancerProps> = ({
             background: color,
             width:
               ((Math.abs(offsetAmount) / Math.abs(max.offset)) * width) / 2,
-            height: thk,
+            height: width / 4,
             position: "absolute",
             top: "50%",
             left: "50%",

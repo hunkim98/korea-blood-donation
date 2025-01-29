@@ -45,7 +45,7 @@ const Home: FC = () => {
               <Body filter={filter} setFilter={setFilter} />
             </div>
             <div className="flex-grow overflow-y-auto overflow-x-hidden h-screen">
-              <Summary filter={filter} setFilter={setFilter} />
+              <Summary filter={filter} />
             </div>
           </div>
         </div>

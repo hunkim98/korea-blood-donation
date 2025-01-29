@@ -112,14 +112,14 @@ const MatrixView: FC<MatrixViewProps> = ({ balancers, filter, setFilter }) => {
   return (
     <div className="flex-1">
       <div className="h-8" />
-      <div className="flex pl-16">
+      <div className="flex pl-16 pr-8">
         {months.map((month) => (
           <div key={`month-${month}`} className="flex-1 text-center">
             <p className="text-body-small">{month}</p>
           </div>
         ))}
       </div>
-      <div className="pl-16">
+      <div className="pl-16 pr-8">
         {years.map((year, i) => {
           return (
             <BalancerRow
