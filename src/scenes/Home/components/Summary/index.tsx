@@ -49,27 +49,48 @@ const Summary: React.FC<SummaryProps> = (props) => {
   console.log(sortedAggMonthData);
 
   return (
-    <div className="h-full border-l border-gray-200 sticky top-0">
+    <div className="sticky top-0 h-full border-l border-gray-200">
       <div className="p-6 h-full w-64 min-w-64 flex flex-col">
-        <div className="h-[50%] max-h-[300px]">
-          {/* <Resizer> */}
-          <SupplyMonthBarGraph
-            data={sortedAggMonthData}
-            width={250}
-            height={250}
-            margin={{
-              top: 10,
-              right: 10,
-              bottom: 20,
-              left: 10,
-            }}
-            filter={props.filter}
-          />
-          {/* </Resizer> */}
+        {/* <div
+          className="h-[50%] max-h-[300px]"
+          style={{
+            maxHeight: "300px",
+          }}
+        > */}
+        <div
+          style={{
+            // maxHeight: "300px",
+            // position: "relative",
+            height: "50%",
+          }}
+          className="flex flex-col"
+        >
+          <div className="text-center">
+            Which month did people donate their blood most?
+          </div>
+          <Resizer>
+            <SupplyMonthBarGraph
+              data={sortedAggMonthData}
+              width={250}
+              height={400}
+              margin={{
+                top: 10,
+                right: 10,
+                bottom: 20,
+                left: 30,
+              }}
+              filter={props.filter}
+            />
+          </Resizer>
         </div>
-        <Resizer>
+        {/* </div> */}
+        {/* <div className="h-[50%] max-h-[300px]"> */}
+        {/* <Resizer> */}
+        <div className="h-1/2">
           <DemandBodyMap width={50} height={50} />
-        </Resizer>
+        </div>
+        {/* </Resizer> */}
+        {/* </div> */}
       </div>
     </div>
   );

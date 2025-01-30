@@ -45,8 +45,9 @@ const Resizer = <T,>({ children }: Resizer<T>) => {
     <div
       ref={containerRef}
       style={{
-        flex: 1,
+        // flex: 1,
         width: "100%",
+        height: "100%",
       }}
     >
       {enhancedChildren}

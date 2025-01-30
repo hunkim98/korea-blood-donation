@@ -37,14 +37,14 @@ const Home: FC = () => {
       <div className="flex justify-center pb-16">
         <div className="flex-1 max-w-screen-xl">
           <Header />
-          <div className="flex flex-grow">
+          <div className="flex">
             <div className="sticky top-0 overflow-y-auto">
               <Navigator filter={filter} setFilter={setFilter} />
             </div>
             <div className="flex-grow overflow-y-auto overflow-x-hidden">
               <Body filter={filter} setFilter={setFilter} />
             </div>
-            <div className="flex-grow overflow-y-auto overflow-x-hidden h-screen">
+            <div className="sticky top-0 overflow-y-auto">
               <Summary filter={filter} />
             </div>
           </div>

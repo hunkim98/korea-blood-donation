@@ -35,31 +35,25 @@ const SupplyMonthBarGraph: FC<SupplyMonthBarGraphProps> = ({
   margin,
 }) => {
   const [hoveringDataIdx, setHoveringDataIdx] = useState<number | null>(null);
-  const ref = useRef<HTMLDivElement>(null);
-  const svgContainerRef =
-    useRef<d3.Selection<SVGSVGElement, unknown, HTMLElement, any>>();
-  const svgGRef =
-    useRef<d3.Selection<SVGGElement, unknown, HTMLElement, any>>();
-  //   const axisGRef = useRef<d3.Selection<SVGGElement, unknown, HTMLElement, any>>()
-  const xAxisGRef =
-    useRef<d3.Selection<SVGGElement, unknown, HTMLElement, any>>();
-  const yAxisGRef =
-    useRef<d3.Selection<SVGGElement, unknown, HTMLElement, any>>();
+  // const ref = useRef<HTMLDivElement>(null);
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const svgContainerRef = useRef<HTMLDivElement>(null);
+  const svgGRef = useRef<d3.Selection<SVGGElement, unknown, null, any>>();
+  //   const axisGRef = useRef<d3.Selection<SVGGElement, unknown, null, any>>()
+  const xAxisGRef = useRef<d3.Selection<SVGGElement, unknown, null, any>>();
+  const yAxisGRef = useRef<d3.Selection<SVGGElement, unknown, null, any>>();
   const yRef = useRef<d3.ScaleBand<string>>();
   const xRef = useRef<d3.ScaleLinear<number, number>>();
-  const xLabelsGRef =
-    useRef<d3.Selection<SVGGElement, unknown, HTMLElement, any>>();
-  const barsGRef =
-    useRef<d3.Selection<SVGGElement, unknown, HTMLElement, any>>();
-  const svgDefsRef =
-    useRef<d3.Selection<SVGDefsElement, unknown, HTMLElement, any>>();
-  const numbersGRef =
-    useRef<d3.Selection<SVGGElement, unknown, HTMLElement, any>>();
+  const xLabelsGRef = useRef<d3.Selection<SVGGElement, unknown, null, any>>();
+  const barsGRef = useRef<d3.Selection<SVGGElement, unknown, null, any>>();
+  const svgDefsRef = useRef<d3.Selection<SVGDefsElement, unknown, null, any>>();
+  const numbersGRef = useRef<d3.Selection<SVGGElement, unknown, null, any>>();
   const behindBarsGRef =
-    useRef<d3.Selection<SVGGElement, unknown, HTMLElement, any>>();
+    useRef<d3.Selection<SVGGElement, unknown, null, any>>();
 
   const renderGraph = useCallback(() => {
-    if (!ref.current) return;
+    // if (!ref.current) return;
+    if (!svgRef.current) return;
     // const height = 250;
 
     const minDonation = d3.min(data, (d) => d.value)!;
@@ -70,42 +64,57 @@ const SupplyMonthBarGraph: FC<SupplyMonthBarGraphProps> = ({
       .range(["rgba(255,0,0,0.1)", "rgba(255,0,0,0.8)"])
       .domain([minDonation, maxDonation] as [number, number]);
 
-    const svgWidth = width;
+    const svgWidth = width - margin.left - margin.right;
     const svgHeight = height - margin.top - margin.bottom;
-    if (svgContainerRef.current) {
-      svgContainerRef.current.attr("width", width).attr("height", height);
-    } else {
-      svgContainerRef.current = d3
-        .select(ref.current)
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height) as any;
-    }
-    const svg = svgGRef.current
-      ? svgGRef.current
-      : (svgGRef.current = svgContainerRef.current!.append("g")).attr(
-          "transform",
-          `translate(0,${margin.top})`
-        );
+    const svgContainer = d3
+      .select(svgContainerRef.current)
+      .attr("width", width)
+      .attr("height", height);
+    // const svg = svgGRef.current
+    //   ? svgGRef.current
+    //   : (svgGRef.current = svgContainerRef.current!.append("g")).attr(
+    //       "transform",
+    //       `translate(0,${margin.top})`
+    //     );
+    const svg = d3
+      .select(svgRef.current)
+      .attr("width", width)
+      .attr("height", height);
+
     const svgDefs = svgDefsRef.current
       ? svgDefsRef.current
       : (svgDefsRef.current = svg.append("defs"));
     const xAxisG = xAxisGRef.current
       ? xAxisGRef.current
-      : (xAxisGRef.current = svg.append("g"));
+      : (xAxisGRef.current = svg.append("g")).attr(
+          "transform",
+          `translate(${margin.left},${margin.top})`
+        );
     const yAxisG = yAxisGRef.current
       ? yAxisGRef.current
-      : (yAxisGRef.current = svg.append("g"));
+      : (yAxisGRef.current = svg.append("g")).attr(
+          "transform",
+          `translate(${margin.left},${margin.top})`
+        );
     const xLabelsG = xLabelsGRef.current
       ? xLabelsGRef.current
-      : (xLabelsGRef.current = svg.append("g"));
+      : (xLabelsGRef.current = svg.append("g")).attr(
+          "transform",
+          `translate(${margin.left},${margin.top})`
+        );
 
     const barsG = barsGRef.current
       ? barsGRef.current
-      : (barsGRef.current = svg.append("g"));
+      : (barsGRef.current = svg.append("g")).attr(
+          "transform",
+          `translate(${margin.left},${margin.top})`
+        );
     const numbersG = numbersGRef.current
       ? numbersGRef.current
-      : (numbersGRef.current = svg.append("g"));
+      : (numbersGRef.current = svg.append("g")).attr(
+          "transform",
+          `translate(${margin.left},${margin.top})`
+        );
     const y = d3
       .scaleBand()
       .domain(data.map((d) => d.label))
@@ -123,16 +132,18 @@ const SupplyMonthBarGraph: FC<SupplyMonthBarGraphProps> = ({
     const xAxis = d3.axisBottom(x);
     const yAxis = d3.axisLeft(y);
 
-    xAxisG
-      .attr("transform", `translate(0,${svgHeight})`)
-      .call(xAxis)
-      .selectAll("text")
-      .call((t) => {
-        // remove thext
-        // t.text("");
-      })
-      .attr("opacity", 1);
+    // xAxisG
+    //   .attr("transform", `translate(0,${svgHeight})`)
+    //   .call(xAxis)
+    //   .selectAll("text")
+    //   .call((t) => {
+    //     // remove text
+    //     t.text("");
+    //   })
+    //   .attr("opacity", 1);
 
+    yAxisG.call(yAxis).selectAll("text");
+    // .attr("fill", "black")
     // behind bars is for hover effect
 
     barsG
@@ -148,7 +159,7 @@ const SupplyMonthBarGraph: FC<SupplyMonthBarGraphProps> = ({
               .attr("fill", (d) => {
                 return colorScale(d.value);
               })
-              .attr("stroke", "rgba(255,255,255,1)")
+              // .attr("stroke", "rgba(255,255,255,1)")
               .attr("stroke-width", 1.5)
               .attr("class", (d, i) => `cursor-pointer node-${i}`)
               .attr("x", (d) => x(0)!)
@@ -157,7 +168,7 @@ const SupplyMonthBarGraph: FC<SupplyMonthBarGraphProps> = ({
               .attr("height", y.bandwidth())
               .transition()
               .duration(1000)
-              // .attr("x", (d) => x(d.value)!)
+              .attr("x", (d) => x(0)!)
               .attr("width", (d) => x(d.value)!)
             // .attr("height", (d) => svgHeight - y(d.label))
           );
@@ -168,10 +179,12 @@ const SupplyMonthBarGraph: FC<SupplyMonthBarGraphProps> = ({
             update
               .transition()
               .duration(1000)
-              .attr("fill", "url(#gradient)")
+              .attr("fill", (d) => {
+                return colorScale(d.value);
+              })
               //   .attr('fill', 'red')
-              .attr("x", (d) => x(d.value)!)
-              .attr("y", svgWidth)
+              .attr("x", (d) => x(0)!)
+              .attr("y", (d) => y(d.label)!)
               .attr("width", (d) => x(d.value)!)
               .attr("height", y.bandwidth())
           );
@@ -224,10 +237,10 @@ const SupplyMonthBarGraph: FC<SupplyMonthBarGraphProps> = ({
   }, [
     data,
     height,
-    margin.bottom,
-    margin.left,
-    margin.right,
-    margin.top,
+    // margin.bottom,
+    // margin.left,
+    // margin.right,
+    // margin.top,
     width,
   ]);
 
@@ -236,10 +249,8 @@ const SupplyMonthBarGraph: FC<SupplyMonthBarGraphProps> = ({
   }, [renderGraph]);
 
   return (
-    <div className="relative" ref={ref}>
-      <div className="text-center">
-        Which month did people donate their blood most?
-      </div>
+    <div className="relative" ref={svgContainerRef}>
+      <svg ref={svgRef}></svg>
     </div>
   );
 };
