@@ -59,7 +59,7 @@ const Navigator: FC<NavigatorProps> = ({ filter, setFilter }) => {
 
   return (
     <div className="sticky top-0 h-full border-r border-gray-200">
-      <div className="p-6 h-full min-w-64 w-64 flex flex-col">
+      <div className="p-6 h-full min-w-64 w-64 flex flex-col max-h-[1000px]">
         {filter.city && (
           <button
             className="text-sm text-gray-500 text-left flex items-center"
@@ -82,7 +82,6 @@ const Navigator: FC<NavigatorProps> = ({ filter, setFilter }) => {
             </div>
           )}
         </div>
-
         <Resizer>
           <KoreaMap
             width={50}

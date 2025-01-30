@@ -122,7 +122,7 @@ const DetailView: FC<DetailViewProps> = ({
   );
 
   return (
-    <div className="pl-12 pt-12">
+    <div className="pl-16 pt-16">
       <Button
         onClick={() => setFilter({ ...filter, month: null, year: null })}
         className="flex items-center mb-4"

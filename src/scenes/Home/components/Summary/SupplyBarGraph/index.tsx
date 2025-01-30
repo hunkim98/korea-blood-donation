@@ -161,7 +161,7 @@ const SupplyMonthBarGraph: FC<SupplyMonthBarGraphProps> = ({
               })
               // .attr("stroke", "rgba(255,255,255,1)")
               .attr("stroke-width", 1.5)
-              .attr("class", (d, i) => `cursor-pointer node-${i}`)
+              // .attr("class", (d, i) => `cursor-pointer node-${i}`)
               .attr("x", (d) => x(0)!)
               .attr("y", (d) => y(d.label)!)
               .attr("width", (d) => x(0)!)

@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from "react";
 
 type Resizer<T> = T & {
+  staticHeight?: number;
+  maxHeight?: number;
+  maxWidth?: number;
   children: React.ReactElement<{
     width: number;
     height: number;
   }>;
 };
 
-const Resizer = <T,>({ children }: Resizer<T>) => {
+const Resizer = <T,>({
+  children,
+  staticHeight,
+  maxWidth,
+  maxHeight,
+}: Resizer<T>) => {
   // add resize observer here
   const [containerWidth, setContainerWidth] = useState<number>(0);
   const [containerHeight, setContainerHeight] = useState<number>(0);
@@ -18,8 +26,19 @@ const Resizer = <T,>({ children }: Resizer<T>) => {
     const resizeObserver = new ResizeObserver((entries) => {
       for (let entry of entries) {
         const { width, height } = entry.contentRect;
-        setContainerWidth(width);
-        setContainerHeight(height);
+        if (maxWidth && width >= maxWidth) {
+          setContainerWidth(maxWidth);
+        } else {
+          setContainerWidth(width);
+        }
+        if (maxHeight && height >= maxHeight) {
+          setContainerHeight(maxHeight);
+        } else {
+          setContainerHeight(height);
+        }
+        if (staticHeight === undefined) {
+          setContainerHeight(height);
+        }
       }
     });
     resizeObserver.observe(containerRef.current);
@@ -36,7 +55,7 @@ const Resizer = <T,>({ children }: Resizer<T>) => {
       ? // override the width prop with the container width
         React.cloneElement(child, {
           width: containerWidth,
-          height: containerHeight,
+          height: staticHeight ? staticHeight : containerHeight,
         })
       : child
   );
@@ -45,9 +64,9 @@ const Resizer = <T,>({ children }: Resizer<T>) => {
     <div
       ref={containerRef}
       style={{
-        // flex: 1,
+        flex: 1,
         width: "100%",
-        height: "100%",
+        // height: "100%",
       }}
     >
       {enhancedChildren}
