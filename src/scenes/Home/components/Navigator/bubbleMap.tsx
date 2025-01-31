@@ -13,12 +13,10 @@ import { Filter } from "@data/useData";
 import { Supply } from "@data/supply/Supply";
 import { Demand } from "@data/demand/Demand";
 import { Event } from "@data/events/Event";
-import topoData from "./provinces-topo-simple.json";
-import cityData from "./cities.json";
 import * as topojson from "topojson-client";
 import P5 from "p5";
 
-interface AbstractMapProps {
+interface BubbleMapProps {
   width: number;
   height: number;
   filter: Filter;
@@ -30,7 +28,7 @@ interface AbstractMapProps {
   };
 }
 
-const AbstractMap: FC<AbstractMapProps> = ({
+const BubbleMap: FC<BubbleMapProps> = ({
   filter,
   width,
   height,
@@ -129,7 +127,9 @@ const AbstractMap: FC<AbstractMapProps> = ({
       );
       setSupplyCanvas(abstractMapCanvas);
       const setup = () => {
-        p5.createCanvas(width, height);
+        const canvas = p5.createCanvas(width, height);
+        canvas.style("border", "1px solid rgba(0,0,0,0.1)");
+        p5.noStroke();
       };
       p5.setup = () => {
         setup();
@@ -137,6 +137,7 @@ const AbstractMap: FC<AbstractMapProps> = ({
       p5.draw = () => {
         p5.clear();
         p5.rect(0, 0, width, height);
+        p5.noStroke();
         abstractMapCanvas.render();
       };
       p5.mouseClicked = () => {
@@ -151,9 +152,7 @@ const AbstractMap: FC<AbstractMapProps> = ({
         abstractMapCanvas.setSelectedCity(filter.city as KR_CITIES);
       }
     }, supplyContainer);
-    console.log("make canvas");
     return () => {
-      console.log("remove canvas");
       canvas.remove();
     };
   }, [supplyContainer, height]);
@@ -184,12 +183,18 @@ const AbstractMap: FC<AbstractMapProps> = ({
   }, [setFilter]);
 
   return (
-    <div className="relative" ref={gotSupplyContainer}>
+    <div
+      className="relative"
+      ref={gotSupplyContainer}
+      style={{
+        height: height,
+      }}
+    >
       <div className="absolute text-body-small mt-8 opacity-50 text-center w-full">
-        Blood Donation Map by Volume
+        Blood Donation Size
       </div>
     </div>
   );
 };
 
-export default AbstractMap;
+export default BubbleMap;

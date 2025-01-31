@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import Header from "./components/Header";
 import Body from "./components/Body";
 import Navigator from "./components/Navigator";
+import Summary from "./components/Summary";
 
 const Home: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -36,12 +37,15 @@ const Home: FC = () => {
       <div className="flex justify-center pb-16">
         <div className="flex-1 max-w-screen-xl">
           <Header />
-          <div className="flex flex-grow">
-            <div className="sticky top-0 h-screen overflow-y-auto">
+          <div className="flex">
+            <div className="sticky top-0 overflow-y-auto">
               <Navigator filter={filter} setFilter={setFilter} />
             </div>
             <div className="flex-grow overflow-y-auto overflow-x-hidden">
               <Body filter={filter} setFilter={setFilter} />
+            </div>
+            <div className="sticky top-0 overflow-y-auto">
+              <Summary filter={filter} />
             </div>
           </div>
         </div>

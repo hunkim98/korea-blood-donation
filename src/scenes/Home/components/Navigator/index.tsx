@@ -4,9 +4,10 @@ import { AbstractMapCanvas } from "./canvas";
 import P5 from "p5";
 import KR_CITIES from "@utils/cities";
 import KoreaMap from "./map";
-import Resizer from "./mapResizer";
-import AbstractMap from "./AbstractMap";
+
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
+import Resizer from "@utils/mapResizer";
+import BubbleMap from "./bubbleMap";
 
 export interface NavigatorProps {
   filter: Filter;
@@ -58,7 +59,7 @@ const Navigator: FC<NavigatorProps> = ({ filter, setFilter }) => {
 
   return (
     <div className="sticky top-0 h-full border-r border-gray-200">
-      <div className="p-6 h-full min-w-72 w-72 flex flex-col">
+      <div className="p-6 h-full min-w-64 w-64 flex flex-col max-h-[1000px]">
         {filter.city && (
           <button
             className="text-sm text-gray-500 text-left flex items-center"
@@ -77,11 +78,10 @@ const Navigator: FC<NavigatorProps> = ({ filter, setFilter }) => {
           </span>
           {!filter.city && (
             <div className="text-body-small text-center bg-gray-100 rounded-sm p-2 mt-2 -mb-8">
-              Select a city to view the supply demand ratio of a specific region
+              Select a city to view the data of a specific region
             </div>
           )}
         </div>
-
         <Resizer>
           <KoreaMap
             width={50}
@@ -94,8 +94,7 @@ const Navigator: FC<NavigatorProps> = ({ filter, setFilter }) => {
           />
         </Resizer>
         <Resizer>
-          {/* <div ref={gotSupplyContainer}></div> */}
-          <AbstractMap
+          <BubbleMap
             filter={filter}
             setFilter={setFilter}
             filteredData={allData}
@@ -103,10 +102,6 @@ const Navigator: FC<NavigatorProps> = ({ filter, setFilter }) => {
             height={50}
           />
         </Resizer>
-        {/* <div>
-          <h2>Demand Map</h2>
-          <div ref={gotDemandContainer}></div>
-        </div> */}
       </div>
     </div>
   );
