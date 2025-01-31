@@ -6,8 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import ExampleBodySvg from "./exampleSvg";
-import HumanBody from "./exampleSvg";
+import HumanBody from "./humanBody";
 import { BodyPart, surgeryToBodyMap } from "@utils/surgeryToBody";
 import { Demand } from "@data/demand/Demand";
 
@@ -15,12 +14,16 @@ export interface DemandBodyMapProps {
   width: number;
   height: number;
   demand: Demand[];
+  city: string | null;
+  year: number | null;
 }
 
 const DemandBodyMap: React.FC<DemandBodyMapProps> = ({
   width,
   height,
   demand,
+  city,
+  year,
 }) => {
   const maxHumanBodyNodeRadius = useMemo(() => {
     return 70;
@@ -50,7 +53,6 @@ const DemandBodyMap: React.FC<DemandBodyMapProps> = ({
         }
       });
     });
-    console.log(newRecord);
     return newRecord;
   }, [demand]);
 
@@ -86,7 +88,10 @@ const DemandBodyMap: React.FC<DemandBodyMapProps> = ({
       //   height: height,
       // }}
     >
-      <div className="text-center">Where were the donated blood used for?</div>
+      <div className="text-center">
+        {year ? "In " + year + ", where" : "Where "} were the donated blood used
+        for?
+      </div>
       <HumanBody
         neck={{ fill: "rgba(255,0,0,0.3)", r: bodyPartNodeSizes.neck }}
         chest={{ fill: "rgba(255,0,0,0.3)", r: bodyPartNodeSizes.chest }}

@@ -152,9 +152,7 @@ const BubbleMap: FC<BubbleMapProps> = ({
         abstractMapCanvas.setSelectedCity(filter.city as KR_CITIES);
       }
     }, supplyContainer);
-    console.log("make canvas");
     return () => {
-      console.log("remove canvas");
       canvas.remove();
     };
   }, [supplyContainer, height]);

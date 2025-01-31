@@ -1,6 +1,7 @@
 import BalancerRow, { BalancerRowProps } from "@components/display/BalancerRow";
 import { Filter, useData } from "@data/useData";
 import { FC } from "react";
+import Legend from "./legend";
 
 export interface MatrixViewProps {
   filter: Filter;
@@ -111,7 +112,11 @@ const MatrixView: FC<MatrixViewProps> = ({ balancers, filter, setFilter }) => {
 
   return (
     <div className="flex-1">
-      <div className="h-8" />
+      <div className="h-4" />
+      <div className="flex pl-6 pr-8">
+        <Legend />
+      </div>
+      <div className="h-4" />
       <div className="flex pl-16 pr-8">
         {months.map((month) => (
           <div key={`month-${month}`} className="flex-1 text-center">

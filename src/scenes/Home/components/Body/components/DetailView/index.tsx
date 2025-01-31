@@ -141,7 +141,7 @@ const DetailView: FC<DetailViewProps> = ({
         year={year}
         month={month}
       />
-      <div className="h-16" />
+      <div className="h-4" />
       <BalancerDetail
         row={row}
         focus={month - 1}

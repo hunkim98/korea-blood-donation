@@ -2,6 +2,7 @@ import { getGradientColor } from "@utils/getGradientColor";
 import { motion } from "framer-motion";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import Rings from "./components/Rings";
+import { GradientColor } from "@utils/colors";
 
 export interface BalancerProps {
   width: number;
@@ -91,13 +92,7 @@ const Balancer: FC<BalancerProps> = ({
   );
 
   const color = useMemo(
-    () =>
-      getGradientColor(
-        ["#3c8a1f", "#50b011", "#dfd73b", "#e39d42", "#d55940"].reverse(),
-        ratio,
-        min.ratio,
-        max.ratio
-      ),
+    () => getGradientColor(GradientColor, ratio, min.ratio, max.ratio),
     [ratio, min.ratio, max.ratio]
   );
 
@@ -155,7 +150,7 @@ const Balancer: FC<BalancerProps> = ({
         className="absolute bg-[#e5e7eb]"
         style={{
           width: thk / 6,
-          height: tabLength * 2,
+          height: tabLength,
           top: "50%",
           right: "50%",
           transform: "translate(50%, -50%)",

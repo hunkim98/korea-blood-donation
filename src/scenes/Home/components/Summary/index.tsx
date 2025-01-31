@@ -128,6 +128,8 @@ const Summary: React.FC<SummaryProps> = (props) => {
           <DemandBodyMap
             width={50}
             height={50}
+            city={props.filter.city}
+            year={props.filter.year}
             demand={
               isSingleMonthSelected
                 ? selectedCityYearData.demand

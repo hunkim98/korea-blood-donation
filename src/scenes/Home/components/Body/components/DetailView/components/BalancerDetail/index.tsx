@@ -57,51 +57,7 @@ const BalancerDetail: FC<BalancerDetailProps> = ({
         animate={{
           left: focus === 0 ? 0 : `${size / 2 - 12}px`,
         }}
-      >
-        <div style={{ height: "100%", position: "relative" }}>
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: "50%",
-              transform: "translateY(-100%)",
-              display: "flex",
-              alignItems: "stretch",
-              gap: 3,
-            }}
-          >
-            <div className="w-0.5 border-l border-gray-500" />
-            <div className="text-body-small">
-              <span className="opacity-50">Best Ratio</span> <br />
-              {/* Round till digit 2 */}
-              {maxScore}%
-            </div>
-          </div>
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              right: 0,
-              transform: "translateX(100%) translateY(-100%)",
-              display: "flex",
-              flexFlow: "column",
-            }}
-          >
-            <div
-              style={{
-                transform: "rotate(-90deg) translateX(-16px)",
-                transformOrigin: "left top",
-              }}
-              className="text-body-small -mb-5"
-            >
-              <span className="opacity-50">Worst Ratio</span> <br />
-              {/* Round till digit 2 */}
-              {minScore}%
-            </div>
-            <div className="w-6 border-t border-gray-500" />
-          </div>
-        </div>
-      </motion.div>
+      ></motion.div>
       <div className="relative">
         <motion.div
           className="flex absolute"
