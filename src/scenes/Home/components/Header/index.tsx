@@ -7,8 +7,7 @@ const Header: FC = () => {
         <div className="h-8" />
         {/* <div className="px-100"> */}
         <h1 className="text-heading-1 whitespace-pre-line ">
-          {`Visualizing a Nation's
-		   Blood System`}
+          {`Balancing Blood: Visualizing Supply \n and Demand in a Nation’s \n Blood System`}
         </h1>
         <h6 className="text-body-large opacity-50">{`A Case Study of South Korea`}</h6>
         {/* </div> */}
