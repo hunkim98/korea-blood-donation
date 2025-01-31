@@ -4,6 +4,8 @@ import Resizer from "@utils/mapResizer";
 import { Filter, useData } from "@data/useData";
 import SupplyMonthBarGraph from "./SupplyBarGraph";
 import { months } from "@utils/months";
+import HumanBody from "./DemandBodyMap/humanBody";
+import { BodyPart, surgeryToBodyMap } from "@utils/surgeryToBody";
 
 interface SummaryProps {
   filter: Filter;
@@ -14,41 +16,64 @@ const Summary: React.FC<SummaryProps> = (props) => {
     props.filter
   );
 
-  const { loading: allDataLoading, data: allData } = useData({
-    year: null,
-    month: null,
+  const { data: allData } = useData({
     city: null,
+    month: null,
+    year: null,
   });
 
   const isSingleMonthSelected = useMemo(() => {
     return props.filter.month !== null && props.filter.year !== null;
   }, [props.filter]);
 
-  const aggMonthData = useMemo(() => {
-    if (!filteredData) {
-      return [];
+  const selectedCityYearData = useMemo(() => {
+    if (!allData) {
+      return {
+        supply: [],
+        demand: [],
+      };
     }
-    let data = filteredData.supply;
+    const supply = allData.supply.filter((el) => {
+      if (props.filter.city) {
+        return el.year === props.filter.year && el.city === props.filter.city;
+      } else {
+        return el.year === props.filter.year;
+      }
+    });
+    const demand = allData.demand.filter((el) => {
+      if (props.filter.city) {
+        return el.year === props.filter.year && el.city === props.filter.city;
+      } else {
+        return el.year === props.filter.year;
+      }
+    });
+    return {
+      supply,
+      demand,
+    };
+  }, [props.filter.year, props.filter.city, allData]);
+
+  const finalPortraySupplyData = useMemo(() => {
     if (isSingleMonthSelected) {
-      const selectedYear = props.filter.year!;
-      data = allData.supply.filter((el) => {
-        if (props.filter.city) {
-          return el.year === selectedYear && el.city === props.filter.city;
-        } else {
-          return el.year === selectedYear;
-        }
-      });
+      return selectedCityYearData.supply;
+    }
+    return filteredData?.supply;
+  }, [filteredData, isSingleMonthSelected, selectedCityYearData]);
+
+  const aggMonthData = useMemo(() => {
+    if (!finalPortraySupplyData) {
+      return [];
     }
     const result: { [month: string]: number } = {};
     let yearCnt = 0;
     const yearsDict: Record<number, number> = {};
-    data.forEach((s) => {
+    finalPortraySupplyData.forEach((s) => {
       if (!yearsDict[s.year]) {
         yearsDict[s.year] = yearCnt;
         yearCnt += 1;
       }
     });
-    data.forEach((s) => {
+    finalPortraySupplyData.forEach((s) => {
       const monthName = months[s.month - 1].short;
       if (!result[monthName]) {
         result[monthName] = 0;
@@ -57,7 +82,7 @@ const Summary: React.FC<SummaryProps> = (props) => {
       return result;
     });
     return result;
-  }, [filteredData, isSingleMonthSelected, props.filter.city, allData]);
+  }, [filteredData, finalPortraySupplyData, props.filter.city, allData]);
 
   const sortedAggMonthData = useMemo(() => {
     return Object.entries(aggMonthData)
@@ -98,13 +123,17 @@ const Summary: React.FC<SummaryProps> = (props) => {
             />
           </Resizer>
         </div>
-        {/* <div className="h-[50%] max-h-[300px]"> */}
         <Resizer>
-          {/* <div className=""> */}
-          <DemandBodyMap width={50} height={50} />
-          {/* </div> */}
+          <DemandBodyMap
+            width={50}
+            height={50}
+            demand={
+              isSingleMonthSelected
+                ? selectedCityYearData.demand
+                : filteredData?.demand
+            }
+          />
         </Resizer>
-        {/* </div> */}
       </div>
     </div>
   );

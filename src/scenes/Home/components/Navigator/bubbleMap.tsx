@@ -193,7 +193,7 @@ const BubbleMap: FC<BubbleMapProps> = ({
       }}
     >
       <div className="absolute text-body-small mt-8 opacity-50 text-center w-full">
-        Blood Donation Map by Volume
+        Blood Donation Size
       </div>
     </div>
   );

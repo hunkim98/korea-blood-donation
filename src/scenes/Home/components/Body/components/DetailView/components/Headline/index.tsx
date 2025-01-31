@@ -24,15 +24,13 @@ const Headline: FC<HeadlineProps> = ({
 
   return (
     <>
-      <p className="text-heading-5 font-normal">
+      <p className=" font-normal text-lg">
         Blood donation supply in{" "}
         <span className="underline font-bold">{city ?? "South Korea"}</span>{" "}
         offset blood demand by{" "}
-      </p>
-      <p>
         <em
           style={{ background: color }}
-          className="p-[3px] px-2 font-bold rounded-lg text-heading-4"
+          className="p-[3px] px-2 font-bold rounded-lg text-heading-6"
         >
           {mode === "surplus"
             ? "+ " + (((supply - demand) / demand) * 100).toFixed(1)
@@ -40,6 +38,7 @@ const Headline: FC<HeadlineProps> = ({
           %
         </em>
       </p>
+      <p></p>
     </>
   );
 };
