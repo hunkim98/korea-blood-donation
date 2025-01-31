@@ -154,7 +154,7 @@ const DetailView: FC<DetailViewProps> = ({
         minScore={worstScore}
       />
       <div className="h-12" />
-      <p className="text-heading-5 pb-4">Red Cross Events</p>
+      <p className="text-heading-5 pb-4">Did the Red Cross host any events?</p>
       <EventsDetail events={events} color={color} />
       <div className="h-12" />
       <p className="text-heading-5 pb-4">Blood Demand</p>

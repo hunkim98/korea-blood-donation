@@ -111,6 +111,7 @@ const Summary: React.FC<SummaryProps> = (props) => {
           <Resizer staticHeight={300}>
             <SupplyMonthBarGraph
               data={sortedAggMonthData}
+              selectedMonth={props.filter.month}
               width={250}
               height={400}
               margin={{

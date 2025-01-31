@@ -13,6 +13,7 @@ import { Supply } from "@data/supply/Supply";
 import { Demand } from "@data/demand/Demand";
 import { Event } from "@data/events/Event";
 import P5 from "p5";
+import { months } from "@utils/months";
 
 export interface SupplyMonthBarGraphProps {
   width: number;
@@ -24,6 +25,7 @@ export interface SupplyMonthBarGraphProps {
     bottom: number;
     left: number;
   };
+  selectedMonth: number | null;
   data: Array<{ label: string; value: number }>;
 }
 
@@ -31,6 +33,7 @@ const SupplyMonthBarGraph: FC<SupplyMonthBarGraphProps> = ({
   filter,
   width,
   height,
+  selectedMonth,
   data,
   margin,
 }) => {
@@ -159,8 +162,17 @@ const SupplyMonthBarGraph: FC<SupplyMonthBarGraphProps> = ({
               .attr("fill", (d) => {
                 return colorScale(d.value);
               })
+              .attr("stroke", (d) => {
+                if (selectedMonth === null) {
+                  return "transparent";
+                } else {
+                  return d.label === months[selectedMonth - 1].short
+                    ? "rgba(0,0,0,1)"
+                    : "transparent";
+                }
+              })
               // .attr("stroke", "rgba(255,255,255,1)")
-              .attr("stroke-width", 1.5)
+              .attr("stroke-width", 2)
               // .attr("class", (d, i) => `cursor-pointer node-${i}`)
               .attr("x", (d) => x(0)!)
               .attr("y", (d) => y(d.label)!)
@@ -181,6 +193,15 @@ const SupplyMonthBarGraph: FC<SupplyMonthBarGraphProps> = ({
               .duration(1000)
               .attr("fill", (d) => {
                 return colorScale(d.value);
+              })
+              .attr("stroke", (d) => {
+                if (selectedMonth === null) {
+                  return "transparent";
+                } else {
+                  return d.label === months[selectedMonth - 1].short
+                    ? "rgba(0,0,0,1)"
+                    : "transparent";
+                }
               })
               //   .attr('fill', 'red')
               .attr("x", (d) => x(0)!)
@@ -241,6 +262,7 @@ const SupplyMonthBarGraph: FC<SupplyMonthBarGraphProps> = ({
     // margin.left,
     // margin.right,
     // margin.top,
+    selectedMonth,
     width,
   ]);
 
