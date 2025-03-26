@@ -89,7 +89,7 @@ const DemandBodyMap: React.FC<DemandBodyMapProps> = ({
       // }}
     >
       <div className="text-center">
-        {year ? "In " + year + ", where" : "Where "} were the donated blood used
+        {year ? "In " + year + ", where" : "Where "} was the donated blood used
         for?
       </div>
       <HumanBody
